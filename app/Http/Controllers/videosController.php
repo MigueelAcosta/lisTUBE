@@ -35,13 +35,13 @@ class videosController extends Controller
     public function store(Request $request)
     {
         $video = $request->file('video');
-        $destino = "C:\\Users\\Miguel Acosta\\Documents\\Universidad\\Septimo\\Desarrollo web\\lisTUBE\\videos";
+        $destino = "C:\\Users\\nosel_000\\Documents\\Universidad\\Septimo\\Desarrollo web\\laravel\\videos subidos";
         $video->move($destino,$video->getClientOriginalName());
         $nombreArchivo = pathinfo($video->getClientOriginalName());
         $nombre = $nombreArchivo['filename'];
         //$pathOld = $video->getRealPath();
-        $cadena = 'ffmpeg -i "' .$destino.'\\'. $nombreArchivo['basename']. '" "'. $destino.'\\convertidos\\'.$nombre.'.mkv"';
-        echo exec($cadena);
+        $cadena = 'ffmpeg -i "' .$destino.'\\'. $nombreArchivo['basename']. '" "'. $destino.'\\videos convertidos\\'.$nombre.'.mkv"';
+        shell_exec($cadena);
         return $cadena;
     }
 

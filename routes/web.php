@@ -12,7 +12,11 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('Videos.videos');
+});
+
+Route::get("verVideo",function(){
+   return view ('Videos.verVideo');
 });
 
 Route::get("fun","convertirVideoController@saludo");
