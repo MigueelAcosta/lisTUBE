@@ -11,26 +11,21 @@
 |
 */
 
-Route::get('/', function () {
-    return view('Videos.videos');
-});
+//Route::get('/', function () {
+//    return view('Videos.videos');
+//});
+Route::get('/','videosController@index');
 
-Route::get("verVideo",function(){
-   return view ('Videos.verVideo');
-});
+Route::get("verVideo/{nombre}",'videosController@verVideo');
 
-Route::get("fun","convertirVideoController@saludo");
+Route::get('misVideos/{id}','videosController@buscarVideos');
 
 Route::get("subirVideo",function (){
     return view("subirvideos");
 });
-
-Route::resource("video", "videosController");
-
-Route::get("/guardar","convertirVideoController@subirVideo");
-
-Route::post("/save","convertirVideoController@videoPost");
+Route::resource("video","videosController");
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+

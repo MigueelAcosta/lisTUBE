@@ -8,7 +8,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">lisTUBE</a>
+            <a class="navbar-brand" href="/">lisTUBE</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -17,37 +17,56 @@
             </ul>
             <form class="navbar-form navbar-right">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search">
+                    <input type="text" class="form-control" placeholder="Buscar">
                 </div>
                 <button type="submit" class="btn btn-default">Buscar</button>
             </form>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">nombre <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <div class="container-login">
-                            <div class="row">
-                                <div class="col-md-offset-1 col-md-10">
-                                    <div class="form-login">
-                                        <h4>Iniciar sesion</h4>
-                                        <input type="text" id="userName" class="form-control input-sm chat-input" placeholder="username" />
-                                        </br>
-                                        <input type="text" id="userPassword" class="form-control input-sm chat-input" placeholder="password" />
-                                        </br>
-                                        <div class="wrapper">
-                                        <span class="group-btn">
-                                            <a href="#" class="btn btn-primary btn-md">Iniciar sesion </a>
-                                            <a href="{{asset('register')}}" class="btn btn-link">Registro</a>
-                                        </span>
+                    @if(Auth::check())
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
+                            {{ Auth::user()->name }} <span class="caret"></span>
+                        </a>
 
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="misVideos/{{Auth::user()->id}}">Mis videos</a>
+                            </li>
+                            <li>
+                                <a href={{route('video.create')}}>Subir video</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('logout') }}"
+                                   onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                    Cerrar sesión
+                                </a>
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    {{ csrf_field() }}
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                    @else
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Iniciar sesión <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <div class="container-login">
+                                <div class="row">
+                                    <div class="col-md-offset-1 col-md-10">
+                                        <form method="POST" action="{{ route('login') }}"></form>
+                                        <div class="form-login">
+                                            <h4>Iniciar sesion</h4>
+                                            <li><a href="{{ route('login') }}">Iniciar sesión</a></li>
+                                            <li><a href="{{ route('register') }}">Registro</a></li>
                                         </div>
-                                    </div>
 
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
-                    </ul>
+                        </ul>
+                    @endif
                 </li>
             </ul>
         </div><!-- /.navbar-collapse -->

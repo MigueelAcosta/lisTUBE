@@ -78,7 +78,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'es',
 
     /*
     |--------------------------------------------------------------------------
@@ -176,6 +176,7 @@ return [
         // lisTUBE\Providers\BroadcastServiceProvider::class,
         lisTUBE\Providers\EventServiceProvider::class,
         lisTUBE\Providers\RouteServiceProvider::class,
+        Laraveles\Spanish\SpanishServiceProvider::class,
 
     ],
 

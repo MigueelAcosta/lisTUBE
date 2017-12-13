@@ -3,6 +3,8 @@
 namespace lisTUBE\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent;
+use lisTUBE\video;
 
 class videosController extends Controller
 {
@@ -13,7 +15,8 @@ class videosController extends Controller
      */
     public function index()
     {
-        return "index";
+        $videos = video::all();
+        return view('Videos.videos',compact('videos'));
     }
 
     /**
@@ -23,7 +26,7 @@ class videosController extends Controller
      */
     public function create()
     {
-        //
+        return view("subirvideos");
     }
 
     /**
@@ -35,14 +38,22 @@ class videosController extends Controller
     public function store(Request $request)
     {
         $video = $request->file('video');
-        $destino = "C:\\Users\\nosel_000\\Documents\\Universidad\\Septimo\\Desarrollo web\\laravel\\videos subidos";
+        $destino = "C:\\users\\nosel_000\\Documents\\Universidad\\Septimo\\Desarrollo web\\lisTUBE\\public\\videos";
         $video->move($destino,$video->getClientOriginalName());
         $nombreArchivo = pathinfo($video->getClientOriginalName());
         $nombre = $nombreArchivo['filename'];
         //$pathOld = $video->getRealPath();
         $cadena = 'ffmpeg -i "' .$destino.'\\'. $nombreArchivo['basename']. '" "'. $destino.'\\videos convertidos\\'.$nombre.'.mkv"';
         shell_exec($cadena);
-        return $cadena;
+
+        //return $request;
+        \lisTUBE\video::create([
+            'nombre'=> $request['titulo'],
+            'genero'=> $request['genero'],
+            'descripcion'=> $request['descripcion'],
+        ]);
+
+        return redirect("/");
     }
 
     /**
@@ -88,5 +99,19 @@ class videosController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function buscarVideos(int $id){
+        $videos = video::where('user_id',$id)->get();
+        return view('Videos.misVideos',compact('videos'));
+    }
+
+    public function buscarVideo(int $id){
+        $videos = video::where('user_id',$id)->value('nombre');
+        return $videos;
+    }
+    public function verVideo($id){
+        $videos = video::where('user_id',$id)->value('nombre');
+        return view('Videos.verVideo')->with('videos',$videos);
     }
 }

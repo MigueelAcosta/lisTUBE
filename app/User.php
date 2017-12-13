@@ -34,6 +34,11 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
+    public function videos(){
+        return $this
+            ->hasMany('lisTUBE\video')
+            ->withTimestaps();
+    }
     public function authorizeRoles($roles)
     {
         if ($this->hasAnyRole($roles)) {
