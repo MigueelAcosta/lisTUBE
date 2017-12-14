@@ -16,6 +16,10 @@
 //});
 Route::get('/','videosController@index');
 
+Route::get('/reproducir',function (){
+   return view('Videos.verVideo');
+});
+
 Route::get("verVideo/{nombre}",'videosController@verVideo');
 
 Route::get('misVideos/{id}','videosController@buscarVideos');

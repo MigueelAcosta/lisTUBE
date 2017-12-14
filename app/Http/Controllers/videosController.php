@@ -48,9 +48,10 @@ class videosController extends Controller
 
         //return $request;
         \lisTUBE\video::create([
-            'nombre'=> $request['titulo'],
+            'nombre'=> $video->getClientOriginalName(),
             'genero'=> $request['genero'],
             'descripcion'=> $request['descripcion'],
+            'user_id' => $request['']
         ]);
 
         return redirect("/");
@@ -111,7 +112,7 @@ class videosController extends Controller
         return $videos;
     }
     public function verVideo($id){
-        $videos = video::where('user_id',$id)->value('nombre');
-        return view('Videos.verVideo')->with('videos',$videos);
+        $video = video::where('user_id',$id)->value('nombre');
+        return redirect('reproducir')->with('video',$video);
     }
 }

@@ -13,7 +13,7 @@
                 preload="auto"
                 poster="//vjs.zencdn.net/v/oceans.png"
                 data-setup='{}'>
-            <source src="videos/{!! $videos->nombre !!}" type="video/webm"></source>
+            <source src="videos/1463030231201.webm" type="video/webm"></source>
             <p class="vjs-no-js">
                 To view this video please enable JavaScript, and consider upgrading to a
                 web browser that

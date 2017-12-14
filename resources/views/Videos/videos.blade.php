@@ -12,9 +12,9 @@
                     @if ($videos->isEmpty())
                         <p>No hay vidios</p>
                     @else
-                        @foreach($videos as $video)
                     <div class="row pt-md">
-                        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 profile">
+                        @foreach($videos as $video)
+                        <div class="col-lg-3 col-sm-4 profile">
                             <div class="img-box">
                                 <img src="http://nabeel.co.in/files/bootsnipp/team/1.jpg" class="img-responsive" >
                                 <ul class="text-center">
