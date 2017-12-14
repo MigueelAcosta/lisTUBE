@@ -2,6 +2,7 @@
 
 namespace lisTUBE\Http\Controllers;
 
+use FFMpeg\FFMpeg;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent;
 use lisTUBE\video;
@@ -37,6 +38,8 @@ class videosController extends Controller
      */
     public function store(Request $request)
     {
+        FFMpeg::create();
+
         $video = $request->file('video');
         $destino = "C:\\users\\nosel_000\\Documents\\Universidad\\Septimo\\Desarrollo web\\lisTUBE\\public\\videos";
         $video->move($destino,$video->getClientOriginalName());

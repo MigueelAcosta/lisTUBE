@@ -69,6 +69,7 @@ class ComposerStaticInitbc9c1b619e4777af5aa31b251372d493
             'Psr\\Container\\' => 14,
             'Predis\\' => 7,
             'PhpParser\\' => 10,
+            'Pbmedia\\LaravelFFMpeg\\' => 22,
         ),
         'M' => 
         array (
@@ -218,6 +219,10 @@ class ComposerStaticInitbc9c1b619e4777af5aa31b251372d493
         'PhpParser\\' => 
         array (
             0 => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser',
+        ),
+        'Pbmedia\\LaravelFFMpeg\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/pbmedia/laravel-ffmpeg/src',
         ),
         'Monolog\\' => 
         array (
@@ -2455,6 +2460,18 @@ class ComposerStaticInitbc9c1b619e4777af5aa31b251372d493
         'PHP_Token_YIELD' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
         'PHP_Token_YIELD_FROM' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
         'Parsedown' => __DIR__ . '/..' . '/erusev/parsedown/Parsedown.php',
+        'Pbmedia\\LaravelFFMpeg\\Disk' => __DIR__ . '/..' . '/pbmedia/laravel-ffmpeg/src/Disk.php',
+        'Pbmedia\\LaravelFFMpeg\\FFMpeg' => __DIR__ . '/..' . '/pbmedia/laravel-ffmpeg/src/FFMpeg.php',
+        'Pbmedia\\LaravelFFMpeg\\FFMpegFacade' => __DIR__ . '/..' . '/pbmedia/laravel-ffmpeg/src/FFMpegFacade.php',
+        'Pbmedia\\LaravelFFMpeg\\FFMpegServiceProvider' => __DIR__ . '/..' . '/pbmedia/laravel-ffmpeg/src/FFMpegServiceProvider.php',
+        'Pbmedia\\LaravelFFMpeg\\File' => __DIR__ . '/..' . '/pbmedia/laravel-ffmpeg/src/File.php',
+        'Pbmedia\\LaravelFFMpeg\\Frame' => __DIR__ . '/..' . '/pbmedia/laravel-ffmpeg/src/Frame.php',
+        'Pbmedia\\LaravelFFMpeg\\FrameExporter' => __DIR__ . '/..' . '/pbmedia/laravel-ffmpeg/src/FrameExporter.php',
+        'Pbmedia\\LaravelFFMpeg\\HLSPlaylistExporter' => __DIR__ . '/..' . '/pbmedia/laravel-ffmpeg/src/HLSPlaylistExporter.php',
+        'Pbmedia\\LaravelFFMpeg\\Media' => __DIR__ . '/..' . '/pbmedia/laravel-ffmpeg/src/Media.php',
+        'Pbmedia\\LaravelFFMpeg\\MediaExporter' => __DIR__ . '/..' . '/pbmedia/laravel-ffmpeg/src/MediaExporter.php',
+        'Pbmedia\\LaravelFFMpeg\\SegmentedExporter' => __DIR__ . '/..' . '/pbmedia/laravel-ffmpeg/src/SegmentedExporter.php',
+        'Pbmedia\\LaravelFFMpeg\\SegmentedFilter' => __DIR__ . '/..' . '/pbmedia/laravel-ffmpeg/src/SegmentedFilter.php',
         'PharIo\\Manifest\\Application' => __DIR__ . '/..' . '/phar-io/manifest/src/values/Application.php',
         'PharIo\\Manifest\\ApplicationName' => __DIR__ . '/..' . '/phar-io/manifest/src/values/ApplicationName.php',
         'PharIo\\Manifest\\Author' => __DIR__ . '/..' . '/phar-io/manifest/src/values/Author.php',
