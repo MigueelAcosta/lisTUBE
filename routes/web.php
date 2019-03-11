@@ -10,10 +10,8 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+//Rutas videos
 
-//Route::get('/', function () {
-//    return view('Videos.videos');
-//});
 Route::get('/','videosController@index');
 
 Route::get('/reproducir',function (){
@@ -22,12 +20,23 @@ Route::get('/reproducir',function (){
 
 Route::get("verVideo/{nombre}",'videosController@verVideo');
 
-Route::get('misVideos/{id}','videosController@buscarVideos');
+Route::get('misVideos','videosController@buscarVideosUsuario')->middleware('auth.basic');
+
+Route::get('/busqueda','videosController@buscarVideosNombre');
 
 Route::get("subirVideo",function (){
     return view("subirvideos");
 });
+
+Route::get("/registroLote", function (){
+    return view('auth.registarLoteUsuarios');
+});
+
+Route::post    ("validarxml", 'controller@validarxml');
+
 Route::resource("video","videosController");
+
+Route::get('getVideo/{video})','videosController@getVideo')->name('getVideo');
 
 Auth::routes();
 

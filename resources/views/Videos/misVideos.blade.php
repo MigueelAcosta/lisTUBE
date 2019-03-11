@@ -3,42 +3,38 @@
 
 @section('content')
     <link rel="stylesheet" href="{{ asset('css/videos.css') }}">
-    <section class="team">
+    <section class="Videos">
         <div class="container">
             <div class="row">
                 <div class="col-md-10 col-md-offset-1">
                     <div class="col-lg-12">
                         <h6 class="description">Mis Videos</h6>
                         @if ($videos->isEmpty())
-                            <p>No hay videos</p>
+                            <h2><strong>Al parecer no has subido ningun video aun. Intenta subir uno.</strong></h2>
                         @else
+                            <div class="row">
                             @foreach($videos as $video)
-                                <div class="row pt-md">
-                                    <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 profile">
-                                        <div class="img-box">
-                                            <img src="http://nabeel.co.in/files/bootsnipp/team/1.jpg" class="img-responsive" >
-                                            <ul class="text-center">
-                                                <a href="{{route ('video.verVideo')}}"><li><i class="fa fa-facebook"></i></li></a>
-                                            </ul>
+                                    <div class="col-sm-6 col-md-4">
+                                        <a href="../verVideo/{!!$video->id!!}" class="thumbnail">
+                                            <img src="{{asset('storage/portadas/'.$video->portada.'.jpeg')}}" height="100" >
+                                        </a>
+                                        <div class="caption">
+                                            <h2>{!!$video->nombre!!}</h2>
+                                            <h3>{!!$video->genero!!}</h3>
+                                            <p>{!!$video->descripcion!!}</p>
+                                            <form action="{{route('video.edit', $video->id)}}" method="GET">
+                                                <button type="submit" class="btn btn-info btn-lg" >Editar</button>
+                                            </form>
+
                                         </div>
-                                        <h1>{!!$video->nombre!!}</h1>
-                                        <h2>{!!$video->genero!!}</h2>
-                                        <p>{!!$video->descripcion!!}</p>
-                                    </div>@endforeach
-                                </div>
-                                @endif
+                                    </div>
+                                @endforeach
+                                    @endif
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <footer>
-        <div class="container">
-            <div class="col-md-10 col-md-offset-1 text-center">
-
-                <h6>Derechos Reservados <i class="fa fa-heart red"></i> by Miguel Acosta</h6>
-            </div>
-        </div>
-    </footer>
 
 @endsection

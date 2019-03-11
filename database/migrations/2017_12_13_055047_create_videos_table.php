@@ -20,7 +20,7 @@ class CreateVideosTable extends Migration
             $table->string('descripcion');
             $table->string('tag');
             $table->string('duracion');
-            $table->dateTime('fechaSubida');
+            $table->string('portada');
             $table->integer('calificacion');
             $table->string('ubicacion');
             $table->timestamps();

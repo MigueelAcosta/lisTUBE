@@ -2,13 +2,23 @@
 
 namespace lisTUBE\Http\Controllers;
 
-use FFMpeg\FFMpeg;
+use FFMpeg;
+use function foo\func;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent;
+use lisTUBE\Http\Requests\storeVideo;
 use lisTUBE\video;
+use Illuminate\Support\Facades\Storage;
+use FFMpeg\Coordinate\Dimension;
+use FFMpeg\Format\Video\X264;
+use FFMpeg\Format\Video\WebM;
 
 class videosController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +26,7 @@ class videosController extends Controller
      */
     public function index()
     {
-        $videos = video::all();
+        $videos = video::paginate(9);
         return view('Videos.videos',compact('videos'));
     }
 
@@ -36,28 +46,77 @@ class videosController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(storeVideo $request)
     {
-        FFMpeg::create();
+        //Guardo el video en el disco
+        $video=$request->file('video');
 
-        $video = $request->file('video');
-        $destino = "C:\\users\\nosel_000\\Documents\\Universidad\\Septimo\\Desarrollo web\\lisTUBE\\public\\videos";
-        $video->move($destino,$video->getClientOriginalName());
-        $nombreArchivo = pathinfo($video->getClientOriginalName());
-        $nombre = $nombreArchivo['filename'];
-        //$pathOld = $video->getRealPath();
-        $cadena = 'ffmpeg -i "' .$destino.'\\'. $nombreArchivo['basename']. '" "'. $destino.'\\videos convertidos\\'.$nombre.'.mkv"';
-        shell_exec($cadena);
 
-        //return $request;
-        \lisTUBE\video::create([
-            'nombre'=> $video->getClientOriginalName(),
+
+        $ubicacion = Storage::disk('vidOriginal')->putFile('publicos',$video);
+
+
+        $fileName= explode(".",$ubicacion);
+        $nombre = explode('/',$fileName[0]);
+
+
+        $this->convertirVideo($video, $nombre[1],$ubicacion);
+        $portada = $nombre[1];
+        //Guardo el registro en la BD
+        $guardado = video::create([
+            'nombre'=> $request['titulo'],
             'genero'=> $request['genero'],
             'descripcion'=> $request['descripcion'],
-            'user_id' => $request['']
+            'portada' =>$portada,
+            'user_id' => auth()->user()->id,
+            'ubicacion' =>$fileName[0],
+
         ]);
 
-        return redirect("/");
+
+        if ($guardado != null and $ubicacion != null ){
+            return back()->with('success','Video subido correctamente.');
+        }else{
+            return back()->with('error', 'No se pudo subir el video. Por favor, intenta de nuevo.');
+        }
+    }
+
+    public function convertirVideo($video, $nombre, $ubicacion){
+        //defino la ubicacion donde se guardan los videos
+        $path = 'C:/Users/nosel_000/Documents/Universidad/Septimo/Desarrollo web/lisTUBE/storage/app/public/videos/';
+
+
+
+
+        //creo el manejador de ffmpeg
+        $ffmpeg = FFMpeg\FFMpeg::create(array(
+            'ffmpeg.binaries'  => 'C:/ffmpeg/v3/bin/ffmpeg.exe',
+            'ffprobe.binaries' => 'C:/ffmpeg/v3/bin/ffprobe.exe',
+            'timeout'          => 0, // The timeout for the underlying process
+            'ffmpeg.threads'   => 12,   // The number of threads that FFMpeg should use
+));
+        $convertido = $ffmpeg->open($video);
+
+        //defino el formato mp4
+        $format = new FFMpeg\Format\Video\X264();
+        $format->setAudioCodec("libmp3lame");
+
+        //imprimo el progreso
+        $format->on('progress', function ($convertido, $format, $percentage) {
+            echo "$percentage % transcoded";
+        });
+
+
+        //saco el thumbnail
+        $convertido->frame(FFMpeg\Coordinate\TimeCode::fromSeconds(1))
+            ->save('C:/Users/nosel_000/Documents/Universidad/Septimo/Desarrollo web/lisTUBE/storage/app/public/portadas/'.$nombre.'.jpeg');
+
+        //convierto los videos
+        $convertido
+            ->save($format,$path.$ubicacion.'.mp4');
+            //->save(new FFMpeg\Format\Video\WMV(),$ubicacion. $nombre.'.wmv')
+            //->save(new FFMpeg\Format\Video\WebM(), $ubicacion. $nombre.'.webm');
+
     }
 
     /**
@@ -79,7 +138,8 @@ class videosController extends Controller
      */
     public function edit($id)
     {
-        //
+        $video = video::find($id);
+        return view('Videos.editarVideos')->with('video',$video);
     }
 
     /**
@@ -91,7 +151,19 @@ class videosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $video = video::find($id);
+        if($request['titulo']!=null or $request['titulo']){
+            $video->nombre = $request['titulo'];
+        }
+        if ($request['genero']!= null or $request['genero']!=""){
+            $video->genero = $request['genero'];
+        }
+        if ($request['descripcion']!= null or $request['descripcion']!=""){
+            $video->descripcion = $request['descripcion'];
+        }
+        $video->save();
+        return redirect()->to('/misVideos')->send('success', 'El video ha sido editado correctamente');
+
     }
 
     /**
@@ -105,17 +177,40 @@ class videosController extends Controller
         //
     }
 
-    public function buscarVideos(int $id){
-        $videos = video::where('user_id',$id)->get();
+    public function buscarVideosUsuario(){
+        $videos = video::where('user_id',auth()->user()->id)->get();
         return view('Videos.misVideos',compact('videos'));
+    }
+
+    public function buscarVideosNombre(Request $request){
+        $busqueda = $request->get('nombre');
+        $videos = video::where('nombre','like','%'.$busqueda.'%')->get();
+        return view('Videos.videos',compact('videos'));
     }
 
     public function buscarVideo(int $id){
         $videos = video::where('user_id',$id)->value('nombre');
         return $videos;
+        //return redirect('') ->with($videos);
     }
     public function verVideo($id){
-        $video = video::where('user_id',$id)->value('nombre');
-        return redirect('reproducir')->with('video',$video);
+        $video = video::find($id);
+        return view('Videos.verVideo')->with('video',$video);
     }
+
+    public function getVideo(Video $video){
+        $name = $video->name;
+        $fileContents = Storage::disk('vidOriginales')->get("{$name}");
+        $response = Response::make($fileContents, 200);
+        $response->header('Content-Type', "video/mp4");
+        return $response;
+    }
+
+    public function getRecientes(){
+        $videos = video::orderby('created_at','desc')->take(3)->get();
+        return $videos;
+    }
+
+
+
 }

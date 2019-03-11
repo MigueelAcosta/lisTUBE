@@ -75,4 +75,9 @@ class RegisterController extends Controller
 
         return $user;
     }
+
+    public function getUser($id){
+        $user = User::find($id);
+        return $user->name;
+    }
 }

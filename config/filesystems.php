@@ -55,6 +55,24 @@ return [
             'visibility' => 'public',
         ],
 
+        'videos' =>[
+            'driver' => 'local',
+            'root' => storage_path('app/public/videos'),
+            'url' =>env('APP_URL') .'/videos',
+            'visibility' => 'public',
+        ],
+
+        'vidOriginal' =>[
+            'driver' => 'local',
+            'root' => storage_path('app/resources/videos'),
+            'visibility' => 'public',
+        ],
+
+        'portadas'=>[
+            'driver' => 'local',
+            'root' => storage_path('app/resources/portadas'),
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_KEY'),

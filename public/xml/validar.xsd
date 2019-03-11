@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/1999/XSL/Transform">
+    <xs:element name="Lista">
+        <xs:complexType>
+            <xs:secuence>
+                <xs:element name="usuario" type="usuario" maxOccurs="unbounded"></xs:element>
+            </xs:secuence>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="usuario">
+        <xs:sequence>
+            <xs:element name="Nombre" type="xs:string" minOccurs="1"/>
+            <xs:element name="email" type="email" minOccurs="1"/>
+            <xs:element name="contraseña" type="xs:string" minOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xsd:simpleType name="email">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="[^@]+@[^\.]+\..+"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+</xs:schema>

@@ -25,7 +25,7 @@ class FFMpegServiceProvider implements ServiceProviderInterface
             'ffmpeg.timeout'   => 300,
             'ffmpeg.binaries'  => array('avconv', 'ffmpeg'),
             'ffprobe.timeout'  => 30,
-            'ffprobe.binaries' => array('avprobe', 'ffprobe'),
+            'ffprobe.binaries' => 'C:/ffmpeg/bin/ffprobe.exe', //array('avprobe', 'ffprobe'),
         );
         $app['ffmpeg.logger'] = null;
 
